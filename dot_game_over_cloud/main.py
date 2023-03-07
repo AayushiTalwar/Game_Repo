@@ -5,8 +5,6 @@ from random import *
 import time
 
 
-
-# ===================================================================
 HEADER_LENGTH = 10
 
 IP = "13mudit.tech"
@@ -38,21 +36,22 @@ def connect():
             message_header = client_socket.recv(HEADER_LENGTH)
             message_length = int(message_header.decode('utf-8').strip())
             data = client_socket.recv(message_length).decode('utf-8')\
+            
             # 1#Aayu#(127, 543)
             split_data = data.split("#")
             curr_player = int(split_data[0])
             last_played_move = split_data[-1] 
             
-            # curr_player = int(client_socket.recv(4).decode("utf-8"))
+
         except:
             continue
     
     return curr_player, last_played_move
-# ====================================================================
+
 
 pygame.init()
-display_width = 600
-display_height = 600
+display_width = 550
+display_height = 550
 count_score_height = 100
 cell = 50
 
@@ -61,9 +60,9 @@ pygame.display.set_caption('Game Maybe...')
 
 clock = pygame.time.Clock()
 
-def message_display(text,x,y):
+def message_display(text, x, y, c):
     largetext = pygame.font.Font('freesansbold.ttf',25)
-    TextSurf = largetext.render(text, True, (255,255,255))
+    TextSurf = largetext.render(text, True, c)
     TextRect = TextSurf.get_rect()
     TextRect = (x,y)
     gameDisplay.blit(TextSurf,TextRect)
@@ -99,10 +98,10 @@ def countScore():
 
 
 def gameLoop():
-    # curr_player = 0
+
     curr_player, last_move = connect()
     opponent_name = ""
-    # global my_username
+
     mouse = (0, 0)
     all_filled = False
     message_header, message = None, None
@@ -121,8 +120,7 @@ def gameLoop():
                 print(message)
         
         if curr_player == 1:
-            # if message is not None:
-            #     client_socket.send(message_header + message)
+
             if last_move != "":
                 mouse = eval(last_move)
 
@@ -137,6 +135,8 @@ def gameLoop():
                 
             except:
                 pass
+
+        all_filled = True
         already_changed = 0
         curr_curr_player = curr_player
         for cell_row in cells:
@@ -144,24 +144,29 @@ def gameLoop():
                 curr_player, already_changed = cell.update(mouse, curr_player, already_changed, curr_curr_player)
                 all_filled = cell.is_filled() and all_filled
         
-        gameDisplay.fill((0, 0, 0))
-        drawGrid(gameDisplay, (255, 255, 255))
+        gameDisplay.fill((30, 30, 30))
         for cell_row in cells:
             for cell in cell_row:
                 cell.draw(gameDisplay)
+
+        drawGrid(gameDisplay, (200, 200, 200))
         
-        message_display(f"{my_username}: {countScore()[0]}", 50, display_height+20)
-        message_display(f"{opponent_name}: {countScore()[1]}", 50, display_height+ 50)
+
+        message_display(f"{my_username}: {countScore()[0]}", display_width//10, display_height+20, (200, 50, 50))
+
+        if opponent_name != "":
+            message_display(f"{opponent_name}: {countScore()[1]}", display_width//10, display_height+ 50, (50, 50, 200))
+        
         if curr_player ==0 and not all_filled:
-            message_display(f"Your turn", 300, display_height+50)
+            message_display(f"Your turn", display_width//2, display_height+50, (200, 200, 200))
         if all_filled :
             score = countScore()
             if score[0] > score[1]:
-                message_display(f"{my_username} wins!", 300, display_height+50)
+                message_display(f"{my_username} wins!", display_width//2, display_height+50, (200, 200, 200))
             elif score[1]>score[0]:
-                message_display(f"{opponent_name} wins!", 300, display_height+50)
+                message_display(f"{opponent_name} wins!", display_width//2, display_height+50, (200, 200, 200))
             else:
-                message_display(f"It is a tie!", 300, display_height+50)
+                message_display(f"It is a tie!", display_width//2, display_height+50, (200, 200, 200))
         pygame.display.update()
 
         clock.tick(30)

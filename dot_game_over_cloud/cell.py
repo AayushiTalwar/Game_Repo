@@ -31,21 +31,18 @@ class Cell:
 			if not already_changed:
 				already_changed = 1
 				nextplayer = (curr_player+1)%2
-				# nextplayer = (curr_player+1)%2
 				 
 		if distance(mouse, right) <= bounding_radius and self.edges[1] == 0:
 			self.edges[1] = 1
 			if not already_changed:
 				already_changed = 1
 				nextplayer = (curr_player+1)%2
-				# nextplayer = (curr_player+1)%2 if self.isBorder else curr_player
 
 		if distance(mouse, bottom) <= bounding_radius and self.edges[2] == 0:
 			self.edges[2] = 1
 			if not already_changed:
 				already_changed = 1
 				nextplayer = (curr_player+1)%2
-				# nextplayer = (curr_player+1)%2 if self.isBorder else curr_player
 
 		if distance(mouse, left) <= bounding_radius and self.edges[3] == 0:
 			self.edges[3] = 1
@@ -53,17 +50,13 @@ class Cell:
 				already_changed = 1
 				nextplayer = (curr_player+1)%2
 				
-			# nextplayer = (curr_player+1)%2 
+
 		if not self.filled and all(self.edges):
 			self.filled = True
-			# self.player = curr_player
-			# nextplayer = curr_player
 			self.player = curr_curr_player
 			nextplayer = curr_curr_player
 
-		# curr_curr_player = nextplayer
 		return nextplayer, already_changed
-
 
 
 	def draw(self, gameDisplay):
@@ -73,20 +66,20 @@ class Cell:
 
 		if self.filled:
 			if self.player == 0:
-				color = (150, 0, 0, 50)
+				color = (150, 0, 0)
 			else:
-				color = (0, 0, 150, 50)
+				color = (0, 0, 150)
 
 			pygame.draw.rect(gameDisplay, color, [x, y, cell, cell])
 
 		if self.edges[0] == 1:
-			pygame.draw.line(gameDisplay, (255, 255, 255), (x, y), (x + cell, y), width)
+			pygame.draw.line(gameDisplay, (200, 200, 200), (x, y), (x + cell, y), width)
 
 		if self.edges[1] == 1:
-			pygame.draw.line(gameDisplay, (255, 255, 255), (x+ cell, y), (x + cell, y + cell), width)
+			pygame.draw.line(gameDisplay, (200, 200, 200), (x+ cell, y), (x + cell, y + cell), width)
 
 		if self.edges[2] == 1:
-			pygame.draw.line(gameDisplay, (255, 255, 255), (x , y+cell), (x + cell, y + cell), width)
+			pygame.draw.line(gameDisplay, (200, 200, 200), (x , y+cell), (x + cell, y + cell), width)
 		
 		if self.edges[3] == 1:
-			pygame.draw.line(gameDisplay, (255, 255, 255),  (x, y), (x, y+ cell), width)
+			pygame.draw.line(gameDisplay, (200, 200, 200),  (x, y), (x, y+ cell), width)
