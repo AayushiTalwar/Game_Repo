@@ -30,9 +30,9 @@ cells = []
 for i in range (cell//2, display_height-cell//2, cell):
     cells.append([]) 
     for j in range(cell//2, display_width-cell//2, cell):
-        isBorder = False;
+        isBorder = False
         if(j == cell//2 or i == cell//2):
-            isBorder= True
+            isBorder = True
         new_cell = Cell(j, i, cell, isBorder)
         cells[-1].append(new_cell)
 
@@ -62,9 +62,12 @@ def gameLoop():
             if event.type == pygame.MOUSEBUTTONDOWN:
 
                 mouse = pygame.mouse.get_pos()
+                already_changed = 0
+                curr_curr_player = curr_player
                 for cell_row in cells:
                     for cell in cell_row:
-                        curr_player = cell.update(mouse, curr_player)
+                        curr_player, already_changed = cell.update(mouse, curr_player, already_changed, curr_curr_player)
+                        # curr_curr_player = curr_player
 
             
 
