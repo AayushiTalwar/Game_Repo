@@ -104,6 +104,7 @@ def gameLoop():
     opponent_name = ""
     # global my_username
     mouse = (0, 0)
+    all_filled = False
     message_header, message = None, None
     while True:
         for event in pygame.event.get():
@@ -141,7 +142,8 @@ def gameLoop():
         for cell_row in cells:
             for cell in cell_row:
                 curr_player, already_changed = cell.update(mouse, curr_player, already_changed, curr_curr_player)
-
+                all_filled = cell.is_filled() and all_filled
+        
         gameDisplay.fill((0, 0, 0))
         drawGrid(gameDisplay, (255, 255, 255))
         for cell_row in cells:
@@ -150,10 +152,18 @@ def gameLoop():
         
         message_display(f"{my_username}: {countScore()[0]}", 50, display_height+20)
         message_display(f"{opponent_name}: {countScore()[1]}", 50, display_height+ 50)
-        if curr_player ==0:
-
+        if curr_player ==0 and not all_filled:
             message_display(f"Your turn", 300, display_height+50)
+        if all_filled :
+            score = countScore()
+            if score[0] > score[1]:
+                message_display(f"{my_username} wins!", 300, display_height+50)
+            elif score[1]>score[0]:
+                message_display(f"{opponent_name} wins!", 300, display_height+50)
+            else:
+                message_display(f"It is a tie!", 300, display_height+50)
         pygame.display.update()
+
         clock.tick(30)
 
 gameLoop()

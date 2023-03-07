@@ -14,7 +14,9 @@ class Cell:
 		self.isBorder = isBorder
 	
 
-
+	def is_filled(self):
+		return self.filled
+	
 	def update(self, mouse, curr_player, already_changed, curr_curr_player):
 
 		top = (self.x+self.cell//2, self.y)
